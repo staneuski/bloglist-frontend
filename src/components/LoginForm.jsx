@@ -12,7 +12,6 @@ const LoginForm = ({
   setUsername, username,
   setPassword, password
 }) => (<>
-  <h2>log in to application</h2>
   <form onSubmit={handleLogin}>
     <Input
       handleInput={({ target }) => setUsername(target.value)}

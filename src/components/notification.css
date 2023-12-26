@@ -1,0 +1,21 @@
+/**
+ * https://en.bem.info/methodology
+ */
+
+.notification {
+  background: lightgrey;
+  border-radius: 5px;
+  border-style: solid;
+  color: blue;
+  font-size: 20px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.notification_error {
+  color: red;
+}
+
+.notification_success {
+  color: green;
+}
