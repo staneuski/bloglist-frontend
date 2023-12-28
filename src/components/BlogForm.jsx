@@ -1,3 +1,5 @@
+import Togglable from './Togglable'
+
 const Input = ({ handleInput, type, name, value }) => {
   return (
     <div>
@@ -12,7 +14,7 @@ const BlogForm = ({ handleCreate, setBlog, blog }) => {
     setBlog({...blog, [name]: value})
   }
 
-  return (<>
+  return (<Togglable buttonLabel='new blog'>
     <h2>create new</h2>
     <form onSubmit={handleCreate}>
       <Input
@@ -35,7 +37,7 @@ const BlogForm = ({ handleCreate, setBlog, blog }) => {
       />
       <button type='submit'>create</button>
     </form>
-  </>)
+  </Togglable>)
 }
 
 export default BlogForm
