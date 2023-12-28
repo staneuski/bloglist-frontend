@@ -8,9 +8,8 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
-  const [errorMessage, setErrorMessage] = useState(null)
-
   const [blogs, setBlogs] = useState([])
+  const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
 
   useEffect(() => {

@@ -8,8 +8,6 @@ const Togglable = forwardRef((props, refs) => {
 
   const toggleVisibility = () => { setVisible(!visible) }
 
-  // useImperativeHandle(refs, () => { toggleVisibility })
-
   useImperativeHandle(refs, () => {
     return {
       toggleVisibility
