@@ -29,6 +29,13 @@ const App = () => {
     blogService.setToken(user.token)
   }, [])
 
+  const handleLogout = (event) => {
+    event.preventDefault()
+
+    window.localStorage.removeItem('loggedUser')
+    setUser(null)
+  }
+
   const notify = (message) => {
     setErrorMessage(message)
     setTimeout(() => setErrorMessage(null), 5000)
@@ -55,13 +62,6 @@ const App = () => {
       console.error(exception.response.data.error)
       notify(exception.response.data.error)
     }
-  }
-
-  const handleLogout = (event) => {
-    event.preventDefault()
-
-    window.localStorage.removeItem('loggedUser')
-    setUser(null)
   }
 
   return (

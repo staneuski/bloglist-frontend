@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 import Togglable from './Togglable'
 
@@ -12,22 +12,25 @@ const Input = ({ handleInput, type, name, value }) => {
 }
 
 const BlogForm = ({ createBlog }) => {
+  const self = useRef()
+
   const EMPTY = { title: '', author: '', url: '' }
   const [blog, setBlog] = useState(EMPTY)
-  const handleAddBlog = async (event) => {
+  const handleCreateBlog = async (event) => {
     event.preventDefault()
 
     createBlog(blog)
     setBlog(EMPTY)
+    self.current.toggleVisibility()
   }
 
   const setItem = ({ name, value }) => {
     setBlog({...blog, [name]: value})
   }
 
-  return (<Togglable buttonLabel='new blog'>
+  return (<Togglable buttonLabel='new blog' ref={self}>
     <h2>create new</h2>
-    <form onSubmit={handleAddBlog}>
+    <form onSubmit={handleCreateBlog}>
       <Input
         handleInput={({ target }) => setItem(target)}
         type='text'
