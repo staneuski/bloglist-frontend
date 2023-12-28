@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import Togglable from './Togglable'
 
 const Input = ({ handleInput, type, name, value }) => {
@@ -9,14 +11,23 @@ const Input = ({ handleInput, type, name, value }) => {
   )
 }
 
-const BlogForm = ({ handleCreate, setBlog, blog }) => {
+const BlogForm = ({ createBlog }) => {
+  const EMPTY = { title: '', author: '', url: '' }
+  const [blog, setBlog] = useState(EMPTY)
+  const handleAddBlog = async (event) => {
+    event.preventDefault()
+
+    createBlog(blog)
+    setBlog(EMPTY)
+  }
+
   const setItem = ({ name, value }) => {
     setBlog({...blog, [name]: value})
   }
 
   return (<Togglable buttonLabel='new blog'>
     <h2>create new</h2>
-    <form onSubmit={handleCreate}>
+    <form onSubmit={handleAddBlog}>
       <Input
         handleInput={({ target }) => setItem(target)}
         type='text'
