@@ -6,11 +6,3 @@
   border-width: 1.5px;
   margin-bottom: 5px;
 }
-
-.blog__title, .blog__link, .blog__username {
-  --nothing: none;
-}
-
-.blog__button-visibility, .blog__button-like, .blog__button-remove {
-  --nothing: none;
-}

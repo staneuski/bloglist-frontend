@@ -1,10 +1,5 @@
 /**
  * https://en.bem.info/methodology
  */
-
-@import url("library.blocks/button.css");
-@import url("library.blocks/link.css");
-
 @import url("components/blog.css");
-@import url("components/blog-form.css");
 @import url("components/notification.css");
