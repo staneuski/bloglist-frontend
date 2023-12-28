@@ -11,7 +11,12 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
     <div className='blog'>
       <div className='blog__title'>
         <b>{blog.title}</b> by <i>{blog.author}</i>
-        <button onClick={toggleVisibility}>{visible ? 'hide' : 'show'}</button>
+        <button
+          className='button blog__button-visibility'
+          onClick={toggleVisibility}
+        >
+          {visible ? 'hide' : 'show'}
+        </button>
       </div>
       {visible && <div>
         <a className='link blog__link' href={blog.url}>{blog.url}</a>
@@ -21,7 +26,7 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
             like
           </button>
         </div>
-        <div>{blog.user.name}</div>
+        <div className='blog__username'>{blog.user.name}</div>
         <button className='button blog__button-remove' onClick={handleRemove}>
           remove
         </button>
@@ -32,7 +37,7 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  handleLike: PropTypes.func,
+  handleLike: PropTypes.func.isRequired,
   handleRemove: PropTypes.func
 }
 

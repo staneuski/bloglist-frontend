@@ -11,6 +11,6 @@
   --nothing: none;
 }
 
-.blog__button-show, .blog__button-like, .blog__button-remove {
+.blog__button-visibility, .blog__button-like, .blog__button-remove {
   --nothing: none;
 }
