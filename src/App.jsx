@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 import BlogForm from './components/BlogForm'
-import Blogs from './components/Blogs'
+import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
@@ -65,6 +65,20 @@ const App = () => {
     }
   }
 
+  const likeBlog = async (id) => {
+    const blogToUpdate = blogs.find(b => b.id === id)
+    const blogObject = {...blogToUpdate, likes: blogToUpdate.likes + 1 }
+
+    try {
+      const blog = await blogService.update(id, blogObject)
+
+      setBlogs(blogs.map(b => b.id !== id ? b : blog))
+    } catch (exception) {
+      console.error(exception.response.data.error)
+      notify(exception.response.data.error)
+    }
+  }
+
   return (
     <div>
       {!user
@@ -79,7 +93,13 @@ const App = () => {
           {user.name} logged in
           <button onClick={handleLogout}>logout</button>
           <BlogForm createBlog={createBlog} />
-          <Blogs blogs={blogs} />
+          {blogs.map(blog =>
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleLike={() => likeBlog(blog.id)}
+            />
+          )}
         </>
       }
     </div>

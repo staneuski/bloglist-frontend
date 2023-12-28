@@ -1,11 +1,9 @@
 import { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLike }) => {
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => { setVisible(!visible) }
-
-  const handleLike = () => { }
 
   return (
     <div className='blog'>
@@ -25,12 +23,4 @@ const Blog = ({ blog }) => {
   )
 }
 
-const Blogs = ({ blogs }) => (<>
-  {blogs.map(blog =>
-    <Blog
-      key={blog.id}
-      blog={blog}
-    />)}
-</>)
-
-export default Blogs
+export default Blog
