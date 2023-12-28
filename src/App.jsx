@@ -19,7 +19,7 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedUser')
+    const loggedUserJSON = localStorage.getItem('loggedUser')
     if (!loggedUserJSON)
       return
 
@@ -31,7 +31,7 @@ const App = () => {
   const handleLogout = (event) => {
     event.preventDefault()
 
-    window.localStorage.removeItem('loggedUser')
+    localStorage.removeItem('loggedUser')
     setUser(null)
   }
 
@@ -45,7 +45,7 @@ const App = () => {
       const user = await loginService.login(credentials)
       blogService.setToken(user.token)
 
-      window.localStorage.setItem('loggedUser', JSON.stringify(user))
+      localStorage.setItem('loggedUser', JSON.stringify(user))
       setUser(user)
     } catch (exception) {
       console.error(exception.response.data.error)
@@ -79,6 +79,22 @@ const App = () => {
     }
   }
 
+  const removeBlog = async (id) => {
+    const blogToRemove = blogs.find(b => b.id === id)
+    console.log(blogToRemove)
+    if (!confirm(`Remove blog ${blogToRemove.title} by ${blogToRemove.author}`))
+      return
+
+    try {
+      await blogService.remove(id)
+
+      setBlogs(blogs.filter(b => b.id !== id))
+    } catch (exception) {
+      console.error(exception.response.data.error)
+      notify(exception.response.data.error)
+    }
+  }
+
   return (
     <div>
       {!user
@@ -100,6 +116,7 @@ const App = () => {
                 key={blog.id}
                 blog={blog}
                 handleLike={() => likeBlog(blog.id)}
+                handleRemove={() => removeBlog(blog.id)}
               />
             )
           }
