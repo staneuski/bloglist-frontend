@@ -1,5 +1,7 @@
 import { useState, useRef } from 'react'
 
+import PropTypes from 'prop-types'
+
 import Togglable from './Togglable'
 
 const Input = ({ handleInput, type, name, value }) => {
@@ -9,6 +11,13 @@ const Input = ({ handleInput, type, name, value }) => {
       <input onChange={handleInput} type={type} value={value} name={name} />
     </div>
   )
+}
+
+Input.propTypes = {
+  handleInput: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired
 }
 
 const BlogForm = ({ createBlog }) => {
@@ -25,7 +34,7 @@ const BlogForm = ({ createBlog }) => {
   }
 
   const setItem = ({ name, value }) => {
-    setBlog({...blog, [name]: value})
+    setBlog({ ...blog, [name]: value })
   }
 
   return (<Togglable buttonLabel='new blog' ref={self}>
@@ -52,6 +61,10 @@ const BlogForm = ({ createBlog }) => {
       <button type='submit'>create</button>
     </form>
   </Togglable>)
+}
+
+BlogForm.propTypes = {
+  createBlog: PropTypes.func.isRequired
 }
 
 export default BlogForm

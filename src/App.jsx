@@ -67,7 +67,7 @@ const App = () => {
 
   const likeBlog = async (id) => {
     const blogToUpdate = blogs.find(b => b.id === id)
-    const blogObject = {...blogToUpdate, likes: blogToUpdate.likes + 1 }
+    const blogObject = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
 
     try {
       const blog = await blogService.update(id, blogObject)
@@ -81,7 +81,6 @@ const App = () => {
 
   const removeBlog = async (id) => {
     const blogToRemove = blogs.find(b => b.id === id)
-    console.log(blogToRemove)
     if (!confirm(`Remove blog ${blogToRemove.title} by ${blogToRemove.author}`))
       return
 

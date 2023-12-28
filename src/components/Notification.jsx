@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 const Notification = ({ message }) => {
   if (message === null)
     return null
@@ -14,6 +16,10 @@ const Notification = ({ message }) => {
     : 'notification_success'
   return (
     <div className={'notification ' + modifier}>{message}</div>)
+}
+
+Notification.propTypes = {
+  buttonLabel: PropTypes.string
 }
 
 export default Notification
