@@ -9,18 +9,22 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
 
   return (
     <div className='blog'>
-      <div>
+      <div className='blog__title'>
         <b>{blog.title}</b> by <i>{blog.author}</i>
         <button onClick={toggleVisibility}>{visible ? 'hide' : 'show'}</button>
       </div>
       {visible && <div>
-        <a href={blog.url}>{blog.url}</a>
+        <a className='link blog__link' href={blog.url}>{blog.url}</a>
         <div>
           likes {blog.likes}
-          <button onClick={handleLike}>like</button>
+          <button className='button blog__button-like' onClick={handleLike}>
+            like
+          </button>
         </div>
         <div>{blog.user.name}</div>
-        <button onClick={handleRemove}>remove</button>
+        <button className='button blog__button-remove' onClick={handleRemove}>
+          remove
+        </button>
       </div>}
     </div>
   )
@@ -28,8 +32,8 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  handleLike: PropTypes.func.isRequired,
-  handleRemove: PropTypes.func.isRequired
+  handleLike: PropTypes.func,
+  handleRemove: PropTypes.func
 }
 
 export default Blog
