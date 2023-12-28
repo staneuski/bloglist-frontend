@@ -24,8 +24,8 @@ describe('<Blog />', () => {
   test('renders only title and author by default', () => {
     expect(container.querySelector('.blog__title'))
       .toHaveTextContent(blog.title && blog.author)
-    expect(container.querySelector('.blog__link')).toBe(null)
-    expect(container.querySelector('.blog__username')).toBe(null)
+    expect(container.querySelector('.blog__link')).toBeNull()
+    expect(container.querySelector('.blog__username')).toBeNull()
   })
 
   test('clicking blog__button-visibility renders details', async () => {

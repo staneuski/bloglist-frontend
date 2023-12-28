@@ -58,7 +58,9 @@ const BlogForm = ({ createBlog }) => {
         name='url'
         value={blog.url}
       />
-      <button type='submit'>create</button>
+      <button className='button blog-form__button-submit' type='submit'>
+        create
+      </button>
     </form>
   </Togglable>)
 }
