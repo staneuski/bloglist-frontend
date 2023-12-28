@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import Blog from './Blog'
@@ -37,5 +37,16 @@ describe('<Blog />', () => {
       .toHaveTextContent(blog.url)
     expect(container.querySelector('.blog__username'))
       .toHaveTextContent(blog.user.name)
+  })
+
+  test('clicking blog__button-like twice received twice called props', async () => {
+    const user = userEvent.setup()
+    await user.click(container.querySelector('.blog__button-visibility'))
+
+    const button = container.querySelector('.blog__button-like')
+    await user.click(button)
+    await user.click(button)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 })
