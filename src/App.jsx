@@ -43,6 +43,7 @@ const App = () => {
   const logIn = async (credentials) => {
     try {
       const user = await loginService.login(credentials)
+      blogService.setToken(user.token)
 
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       setUser(user)
@@ -55,7 +56,8 @@ const App = () => {
   const createBlog = async (blogObject) => {
     try {
       const blog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(blog))
+
+      setBlogs(blogs.concat({ ...blog, user: user }))
       notify(`a new blog '${blog.title}' added`)
     } catch (exception) {
       console.error(exception.response.data.error)
