@@ -21,7 +21,9 @@ const Blog = ({ blog, isOwned, handleLike, handleRemove }) => {
       {visible && <div>
         <a className='link blog__link' href={blog.url}>{blog.url}</a>
         <div>
-          likes {blog.likes}
+          <span className='blog__likes-counter'>
+            likes {blog.likes}
+          </span>
           <button className='button blog__button-like' onClick={handleLike}>
             like
           </button>

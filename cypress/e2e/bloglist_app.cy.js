@@ -154,4 +154,22 @@ describe('Bloglist app', function() {
         })
     })
   })
+
+  it('blogs are sorted in asceding likes order', function() {
+    let likes = []
+    cy.get('.blog-list')
+      .find('.blog')
+      .each(($blog) => {
+        cy.wrap($blog).as('blog')
+        cy.get('@blog').find('.blog__button-visibility').click()
+
+        cy.get('@blog').find('.blog__likes-counter').then(($likesCount) =>
+          likes.push(Number($likesCount.text().replace('likes', '')))
+        )
+      })
+      .then(() => {
+        cy.expect(likes).to.have.ordered.members(
+          likes.toSorted((lhs, rhs) => rhs - lhs))
+      })
+  })
 })
