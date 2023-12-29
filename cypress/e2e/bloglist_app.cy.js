@@ -76,7 +76,7 @@ describe('Bloglist app', function() {
       cy.get('.login-form__button-login').click()
     })
 
-    it.only('a blog can be created', function() {
+    it('a blog can be created', function() {
       cy.contains('new blog').click()
       cy.get('[name="title"]').type(blog.title)
       cy.get('[name="author"]').type(blog.author)
@@ -151,6 +151,24 @@ describe('Bloglist app', function() {
           } else {
             cy.get('@blog').should('not.contain', '.blog__button-remove')
           }
+        })
+    })
+
+    it('blogs are sorted in asceding likes order', function() {
+      let likes = []
+      cy.get('.blog-list')
+        .find('.blog')
+        .each(($blog) => {
+          cy.wrap($blog).as('blog')
+          cy.get('@blog').find('.blog__button-visibility').click()
+  
+          cy.get('@blog').find('.blog__likes-counter').then(($likesCount) =>
+            likes.push(Number($likesCount.text().replace('likes', '')))
+          )
+        })
+        .then(() => {
+          cy.expect(likes).to.have.ordered.members(
+            likes.toSorted((lhs, rhs) => rhs - lhs))
         })
     })
   })
