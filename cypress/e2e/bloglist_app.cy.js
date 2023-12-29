@@ -69,20 +69,25 @@ describe('Note app', function() {
     })
 
     it('A blog can be created', function() {
+      const blog = {
+        title: 'a blog created by Cypress',
+        author: 'docs.cypress.io',
+        url: 'https://cypress.io/'
+      }
+
       cy.contains('new blog').click()
-      cy.get('[name="title"]').type('a blog created by Cypress')
-      cy.get('[name="author"]').type('docs.cypress.io')
-      cy.get('[name="url"]').type('https://cypress.io/')
+      cy.get('[name="title"]').type(blog.title)
+      cy.get('[name="author"]').type(blog.author)
+      cy.get('[name="url"]').type(blog.url)
       cy.get('.blog-form__button-submit').click()
 
-      cy.get('.notification')
-        .should('contain', 'a blog created by Cypress')
+      cy.get('.notification').should('contain', blog.title)
       cy.get('.notification_success')
         .should('have.css', 'color', 'rgb(0, 128, 0)')
 
       cy.get('.blog-list')
-        .should('contain', 'a blog created by Cypress')
-        .and('contain', 'docs.cypress.io')
+        .should('contain', blog.title)
+        .and('contain', blog.author)
     })
   })
 })
