@@ -22,11 +22,11 @@ Cypress.Commands.add('logout', () => {
   cy.visit('')
 })
 
-Cypress.Commands.add('createBlog', ({ title, author, url }) => {
+Cypress.Commands.add('createBlog', ({ title, author, url, likes }) => {
   cy.request({
     url: `${Cypress.env('BACKEND')}/blogs`,
     method: 'POST',
-    body: { title, author, url },
+    body: { title, author, url, likes },
     headers: {
       'Authorization': `Bearer ${JSON.parse(localStorage.getItem('loggedUser')).token}`
     }

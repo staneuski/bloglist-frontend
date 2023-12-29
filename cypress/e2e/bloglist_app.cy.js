@@ -6,12 +6,14 @@ describe('Note app', function() {
     cy.createBlog({
       title: 'Full Stack open',
       author: 'University of Helsinki',
-      url: 'https://fullstackopen.com/en'
+      url: 'https://fullstackopen.com/en',
+      likes: 2
     })
     cy.createBlog({
       title: 'BEM',
       author: 'Yandex',
-      url: 'https://en.bem.info/'
+      url: 'https://en.bem.info/',
+      likes: 4
     })
     cy.logout()
 
@@ -19,7 +21,8 @@ describe('Note app', function() {
     cy.createBlog({
       title: 'Programming Parallel Computers',
       author: 'Jukka Suomela',
-      url: 'https://ppc.cs.aalto.fi/'
+      url: 'https://ppc.cs.aalto.fi/',
+      likes: 6
     })
     cy.logout()
 
@@ -61,6 +64,11 @@ describe('Note app', function() {
   })
 
   describe('When logged in', function() {
+    const blog = {
+      title: 'a blog created by Cypress',
+      author: 'docs.cypress.io',
+      url: 'https://cypress.io/'
+    }
     beforeEach(function() {
       cy.contains('log in').click()
       cy.get('[name="username"]').type('johndoe')
@@ -69,12 +77,6 @@ describe('Note app', function() {
     })
 
     it('A blog can be created', function() {
-      const blog = {
-        title: 'a blog created by Cypress',
-        author: 'docs.cypress.io',
-        url: 'https://cypress.io/'
-      }
-
       cy.contains('new blog').click()
       cy.get('[name="title"]').type(blog.title)
       cy.get('[name="author"]').type(blog.author)
@@ -88,6 +90,20 @@ describe('Note app', function() {
       cy.get('.blog-list')
         .should('contain', blog.title)
         .and('contain', blog.author)
+    })
+
+    it('A blog can be liked', function() {
+      cy
+        .get('.blog-list')
+        .contains('BEM')
+        .parent().parent()
+        .as('blog')
+
+      cy.get('@blog')
+        .find('.blog__button-visibility').click()
+
+      cy.get('@blog').find('.blog__button-like').click()
+      cy.get('@blog').should('contain', 'likes 5')
     })
   })
 })
