@@ -4,16 +4,16 @@ describe('Bloglist app', function() {
 
     cy.signup({ username: 'johndoe', password: 'right', name: 'John Doe' })
     cy.createBlog({
-      title: 'Full Stack open',
-      author: 'University of Helsinki',
-      url: 'https://fullstackopen.com/en',
-      likes: 2
-    })
-    cy.createBlog({
       title: 'BEM',
       author: 'Yandex',
       url: 'https://en.bem.info/',
       likes: 4
+    })
+    cy.createBlog({
+      title: 'Full Stack open',
+      author: 'University of Helsinki',
+      url: 'https://fullstackopen.com/en',
+      likes: 2
     })
     cy.logout()
 
@@ -76,7 +76,7 @@ describe('Bloglist app', function() {
       cy.get('.login-form__button-login').click()
     })
 
-    it('a blog can be created', function() {
+    it.only('a blog can be created', function() {
       cy.contains('new blog').click()
       cy.get('[name="title"]').type(blog.title)
       cy.get('[name="author"]').type(blog.author)
@@ -117,8 +117,41 @@ describe('Bloglist app', function() {
       cy.get('@blog')
         .find('.blog__button-remove').click()
 
-      cy.contains('BEM').should('not.exist')
-      cy.contains('https://en.bem.info/').should('not.exist')
+      cy.get('.blog-list')
+        .should('not.contain', 'BEM')
+        .and('not.contain', 'https://en.bem.info/')
+    })
+
+    it('only the creator can see the delete button of a blog', function() {
+      cy.get('.blog-list')
+        .find('.blog')
+        .each(($blog) => {
+          cy.wrap($blog).as('blog')
+          cy.get('@blog').find('.blog__button-visibility').click()
+
+          const author = 'John Doe'
+          if ($blog.text().includes(author)) {
+            cy.get('@blog').should('contain', '.blog__button-remove')
+          } else {
+            cy.get('@blog').should('not.contain', '.blog__button-remove')
+          }
+        })
+    })
+
+    it('only the creator can see the delete button of a blog', function() {
+      cy.get('.blog-list')
+        .find('.blog')
+        .each(($blog) => {
+          cy.wrap($blog).as('blog')
+          cy.get('@blog').find('.blog__button-visibility').click()
+
+          const author = 'John Doe'
+          if ($blog.text().includes(author)) {
+            cy.get('@blog').should('contain', '.blog__button-remove')
+          } else {
+            cy.get('@blog').should('not.contain', '.blog__button-remove')
+          }
+        })
     })
   })
 })

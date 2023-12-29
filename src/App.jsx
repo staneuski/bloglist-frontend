@@ -115,6 +115,7 @@ const App = () => {
                 <Blog
                   key={blog.id}
                   blog={blog}
+                  isOwned={blog.user.username === user.username}
                   handleLike={() => likeBlog(blog.id)}
                   handleRemove={() => removeBlog(blog.id)}
                 />

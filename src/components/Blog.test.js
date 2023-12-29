@@ -17,7 +17,7 @@ describe('<Blog />', () => {
   let container
   beforeEach(() => {
     container = render(
-      <Blog blog={blog} handleLike={mockHandler} />
+      <Blog blog={blog} isOwned={true} handleLike={mockHandler} />
     ).container
   })
 

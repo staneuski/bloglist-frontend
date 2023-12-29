@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, handleLike, handleRemove }) => {
+const Blog = ({ blog, isOwned, handleLike, handleRemove }) => {
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => { setVisible(!visible) }
@@ -27,9 +27,11 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
           </button>
         </div>
         <div className='blog__username'>{blog.user.name}</div>
-        <button className='button blog__button-remove' onClick={handleRemove}>
+        {isOwned &&
+          <button className='button blog__button-remove' onClick={handleRemove}>
           remove
-        </button>
+          </button>
+        }
       </div>}
     </div>
   )
@@ -37,6 +39,7 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
+  isOwned: PropTypes.bool.isRequired,
   handleLike: PropTypes.func.isRequired,
   handleRemove: PropTypes.func
 }
