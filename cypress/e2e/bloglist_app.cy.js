@@ -161,7 +161,7 @@ describe('Bloglist app', function() {
         .each(($blog) => {
           cy.wrap($blog).as('blog')
           cy.get('@blog').find('.blog__button-visibility').click()
-  
+
           cy.get('@blog').find('.blog__likes-counter').then(($likesCount) =>
             likes.push(Number($likesCount.text().replace('likes', '')))
           )
