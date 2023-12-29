@@ -1,4 +1,4 @@
-describe('Note app', function() {
+describe('Bloglist app', function() {
   beforeEach(function() {
     cy.request('POST',`${Cypress.env('BACKEND')}/testing/reset`)
 
@@ -76,7 +76,7 @@ describe('Note app', function() {
       cy.get('.login-form__button-login').click()
     })
 
-    it('A blog can be created', function() {
+    it('a blog can be created', function() {
       cy.contains('new blog').click()
       cy.get('[name="title"]').type(blog.title)
       cy.get('[name="author"]').type(blog.author)
@@ -92,18 +92,33 @@ describe('Note app', function() {
         .and('contain', blog.author)
     })
 
-    it('A blog can be liked', function() {
+    it('a blog can be liked', function() {
       cy
         .get('.blog-list')
         .contains('BEM')
         .parent().parent()
         .as('blog')
-
       cy.get('@blog')
         .find('.blog__button-visibility').click()
 
       cy.get('@blog').find('.blog__button-like').click()
       cy.get('@blog').should('contain', 'likes 5')
+    })
+
+    it('the user who created a blog can delete it', function() {
+      cy
+        .get('.blog-list')
+        .contains('BEM')
+        .parent().parent()
+        .as('blog')
+      cy.get('@blog')
+        .find('.blog__button-visibility').click()
+
+      cy.get('@blog')
+        .find('.blog__button-remove').click()
+
+      cy.contains('BEM').should('not.exist')
+      cy.contains('https://en.bem.info/').should('not.exist')
     })
   })
 })
