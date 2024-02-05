@@ -29,23 +29,27 @@ const LoginForm = ({ logIn }) => {
     setPassword('')
   }
 
-  return (<>
-    <form onSubmit={handleLogin}>
-      <Input
-        handleInput={({ target }) => setUsername(target.value)}
-        type='text'
-        name='username' value={username}
-      />
-      <Input
-        handleInput={({ target }) => setPassword(target.value)}
-        type='password'
-        name='password' value={password}
-      />
-      <button className='button login-form__button-login' type='submit'>
-        login
-      </button>
-    </form>
-  </>)
+  return (
+    <>
+      <form onSubmit={handleLogin}>
+        <Input
+          handleInput={({ target }) => setUsername(target.value)}
+          type="text"
+          name="username"
+          value={username}
+        />
+        <Input
+          handleInput={({ target }) => setPassword(target.value)}
+          type="password"
+          name="password"
+          value={password}
+        />
+        <button className="button login-form__button-login" type="submit">
+          login
+        </button>
+      </form>
+    </>
+  )
 }
 
 LoginForm.propTypes = {

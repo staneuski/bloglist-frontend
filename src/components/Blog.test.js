@@ -22,8 +22,9 @@ describe('<Blog />', () => {
   })
 
   test('renders only title and author by default', () => {
-    expect(container.querySelector('.blog__title'))
-      .toHaveTextContent(blog.title && blog.author)
+    expect(container.querySelector('.blog__title')).toHaveTextContent(
+      blog.title && blog.author
+    )
     expect(container.querySelector('.blog__link')).toBeNull()
     expect(container.querySelector('.blog__username')).toBeNull()
   })
@@ -33,10 +34,10 @@ describe('<Blog />', () => {
       .setup()
       .click(container.querySelector('.blog__button-visibility'))
 
-    expect(container.querySelector('.blog__link'))
-      .toHaveTextContent(blog.url)
-    expect(container.querySelector('.blog__username'))
-      .toHaveTextContent(blog.user.name)
+    expect(container.querySelector('.blog__link')).toHaveTextContent(blog.url)
+    expect(container.querySelector('.blog__username')).toHaveTextContent(
+      blog.user.name
+    )
   })
 
   test('clicking blog__button-like twice received twice called props', async () => {

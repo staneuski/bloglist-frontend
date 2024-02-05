@@ -13,15 +13,12 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .then(blogs => setBlogs(blogs))
+    blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
 
   useEffect(() => {
     const loggedUserJSON = localStorage.getItem('loggedUser')
-    if (!loggedUserJSON)
-      return
+    if (!loggedUserJSON) return
 
     const user = JSON.parse(loggedUserJSON)
     setUser(user)
@@ -66,13 +63,13 @@ const App = () => {
   }
 
   const likeBlog = async (id) => {
-    const blogToUpdate = blogs.find(b => b.id === id)
+    const blogToUpdate = blogs.find((b) => b.id === id)
     const blogObject = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
 
     try {
       const blog = await blogService.update(id, blogObject)
 
-      setBlogs(blogs.map(b => b.id !== id ? b : blog))
+      setBlogs(blogs.map((b) => (b.id !== id ? b : blog)))
     } catch (exception) {
       console.error(exception.response.data.error)
       notify(exception.response.data.error)
@@ -80,14 +77,14 @@ const App = () => {
   }
 
   const removeBlog = async (id) => {
-    const blogToRemove = blogs.find(b => b.id === id)
+    const blogToRemove = blogs.find((b) => b.id === id)
     if (!confirm(`Remove blog ${blogToRemove.title} by ${blogToRemove.author}`))
       return
 
     try {
       await blogService.remove(id)
 
-      setBlogs(blogs.filter(b => b.id !== id))
+      setBlogs(blogs.filter((b) => b.id !== id))
     } catch (exception) {
       console.error(exception.response.data.error)
       notify(exception.response.data.error)
@@ -96,22 +93,23 @@ const App = () => {
 
   return (
     <div>
-      {!user
-        ? <>
+      {!user ? (
+        <>
           <h2>log in to application</h2>
           <Notification message={errorMessage} />
           <LoginForm logIn={logIn} />
         </>
-        : <>
+      ) : (
+        <>
           <h2>blogs</h2>
           <Notification message={errorMessage} />
           {user.name} logged in
           <button onClick={handleLogout}>logout</button>
           <BlogForm createBlog={createBlog} />
-          <div className='blog-list'>
+          <div className="blog-list">
             {blogs
               .sort((lhs, rhs) => rhs.likes - lhs.likes)
-              .map(blog =>
+              .map((blog) => (
                 <Blog
                   key={blog.id}
                   blog={blog}
@@ -119,11 +117,10 @@ const App = () => {
                   handleLike={() => likeBlog(blog.id)}
                   handleRemove={() => removeBlog(blog.id)}
                 />
-              )
-            }
+              ))}
           </div>
         </>
-      }
+      )}
     </div>
   )
 }

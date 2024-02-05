@@ -37,32 +37,34 @@ const BlogForm = ({ createBlog }) => {
     setBlog({ ...blog, [name]: value })
   }
 
-  return (<Togglable buttonLabel='new blog' ref={self}>
-    <h2>create new</h2>
-    <form onSubmit={handleCreateBlog}>
-      <Input
-        handleInput={({ target }) => setItem(target)}
-        type='text'
-        name='title'
-        value={blog.title}
-      />
-      <Input
-        handleInput={({ target }) => setItem(target)}
-        type='text'
-        name='author'
-        value={blog.author}
-      />
-      <Input
-        handleInput={({ target }) => setItem(target)}
-        type='text'
-        name='url'
-        value={blog.url}
-      />
-      <button className='button blog-form__button-submit' type='submit'>
-        create
-      </button>
-    </form>
-  </Togglable>)
+  return (
+    <Togglable buttonLabel="new blog" ref={self}>
+      <h2>create new</h2>
+      <form onSubmit={handleCreateBlog}>
+        <Input
+          handleInput={({ target }) => setItem(target)}
+          type="text"
+          name="title"
+          value={blog.title}
+        />
+        <Input
+          handleInput={({ target }) => setItem(target)}
+          type="text"
+          name="author"
+          value={blog.author}
+        />
+        <Input
+          handleInput={({ target }) => setItem(target)}
+          type="text"
+          name="url"
+          value={blog.url}
+        />
+        <button className="button blog-form__button-submit" type="submit">
+          create
+        </button>
+      </form>
+    </Togglable>
+  )
 }
 
 BlogForm.propTypes = {
