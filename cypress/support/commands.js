@@ -1,6 +1,7 @@
 Cypress.Commands.add('login', ({ username, password }) => {
   cy.request('POST', `${Cypress.env('BACKEND')}/login`, {
-    username, password
+    username,
+    password
   }).then(({ body }) => {
     localStorage.setItem('loggedUser', JSON.stringify(body))
     cy.visit('')
@@ -9,7 +10,9 @@ Cypress.Commands.add('login', ({ username, password }) => {
 
 Cypress.Commands.add('signup', ({ username, password, name }) => {
   cy.request('POST', `${Cypress.env('BACKEND')}/users`, {
-    username, password, name
+    username,
+    password,
+    name
   }).then(() => {
     cy.login({ username, password })
   })
@@ -28,7 +31,7 @@ Cypress.Commands.add('createBlog', ({ title, author, url, likes }) => {
     method: 'POST',
     body: { title, author, url, likes },
     headers: {
-      'Authorization': `Bearer ${JSON.parse(localStorage.getItem('loggedUser')).token}`
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem('loggedUser')).token}`
     }
   })
 
