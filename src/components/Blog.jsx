@@ -1,11 +1,14 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, isOwned, handleLike, handleRemove }) => {
+const Blog = ({ blog }) => {
   const dispatch = useDispatch()
+  const isOwned =
+    useSelector((state) => state.user).username === blog.user.username
+
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => {
@@ -51,9 +54,6 @@ const Blog = ({ blog, isOwned, handleLike, handleRemove }) => {
     </div>
   )
 }
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  isOwned: PropTypes.bool.isRequired
-}
+Blog.propTypes = { blog: PropTypes.object.isRequired }
 
 export default Blog
