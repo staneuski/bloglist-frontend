@@ -1,8 +1,11 @@
 import { useState } from 'react'
-
+import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
+import { likeBlog, removeBlog } from '../reducers/blogReducer'
+
 const Blog = ({ blog, isOwned, handleLike, handleRemove }) => {
+  const dispatch = useDispatch()
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => {
@@ -27,7 +30,10 @@ const Blog = ({ blog, isOwned, handleLike, handleRemove }) => {
           </a>
           <div>
             <span className="blog__likes-counter">likes {blog.likes}</span>
-            <button className="button blog__button-like" onClick={handleLike}>
+            <button
+              className="button blog__button-like"
+              onClick={() => dispatch(likeBlog(blog))}
+            >
               like
             </button>
           </div>
@@ -35,7 +41,7 @@ const Blog = ({ blog, isOwned, handleLike, handleRemove }) => {
           {isOwned && (
             <button
               className="button blog__button-remove"
-              onClick={handleRemove}
+              onClick={() => dispatch(removeBlog(blog))}
             >
               remove
             </button>
@@ -45,12 +51,9 @@ const Blog = ({ blog, isOwned, handleLike, handleRemove }) => {
     </div>
   )
 }
-
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  isOwned: PropTypes.bool.isRequired,
-  handleLike: PropTypes.func.isRequired,
-  handleRemove: PropTypes.func
+  isOwned: PropTypes.bool.isRequired
 }
 
 export default Blog

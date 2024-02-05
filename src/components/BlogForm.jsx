@@ -1,7 +1,10 @@
 import { useState, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import Togglable from './Togglable'
+
+import { createBlog } from '../reducers/blogReducer'
 
 const Input = ({ handleInput, type, name, value }) => {
   return (
@@ -18,15 +21,16 @@ Input.propTypes = {
   value: PropTypes.string.isRequired
 }
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = () => {
   const self = useRef()
+  const dispatch = useDispatch()
 
   const EMPTY = { title: '', author: '', url: '' }
   const [blog, setBlog] = useState(EMPTY)
   const handleCreateBlog = async (event) => {
     event.preventDefault()
 
-    createBlog(blog)
+    dispatch(createBlog(blog))
     setBlog(EMPTY)
     self.current.toggleVisibility()
   }
@@ -63,10 +67,6 @@ const BlogForm = ({ createBlog }) => {
       </form>
     </Togglable>
   )
-}
-
-BlogForm.propTypes = {
-  createBlog: PropTypes.func.isRequired
 }
 
 export default BlogForm
