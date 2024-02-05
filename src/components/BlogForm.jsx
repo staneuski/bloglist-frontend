@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react'
-
 import PropTypes from 'prop-types'
 
 import Togglable from './Togglable'
@@ -12,7 +11,6 @@ const Input = ({ handleInput, type, name, value }) => {
     </div>
   )
 }
-
 Input.propTypes = {
   handleInput: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,

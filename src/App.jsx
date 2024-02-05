@@ -1,3 +1,5 @@
+import { useDispatch } from 'react-redux'
+
 import { useState, useEffect } from 'react'
 
 import BlogForm from './components/BlogForm'
@@ -7,11 +9,16 @@ import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
-const App = () => {
-  const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [user, setUser] = useState(null)
+import { setNotification } from './reducers/notificationReducer'
 
+const App = () => {
+  const dispatch = useDispatch()
+  // useEffect(() => {
+  //   dispatch() // TODO: initialiseBlogs()
+  // }, [dispatch])
+
+  const [blogs, setBlogs] = useState([])
+  const [user, setUser] = useState(null)
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
@@ -32,11 +39,6 @@ const App = () => {
     setUser(null)
   }
 
-  const notify = (message) => {
-    setErrorMessage(message)
-    setTimeout(() => setErrorMessage(null), 5000)
-  }
-
   const logIn = async (credentials) => {
     try {
       const user = await loginService.login(credentials)
@@ -46,7 +48,7 @@ const App = () => {
       setUser(user)
     } catch (exception) {
       console.error(exception.response.data.error)
-      notify(exception.response.data.error)
+      dispatch(setNotification(exception.response.data.error, 5))
     }
   }
 
@@ -55,10 +57,10 @@ const App = () => {
       const blog = await blogService.create(blogObject)
 
       setBlogs(blogs.concat({ ...blog, user: user }))
-      notify(`a new blog '${blog.title}' added`)
+      dispatch(setNotification(`a new blog '${blog.title}' added`, 5))
     } catch (exception) {
       console.error(exception.response.data.error)
-      notify(exception.response.data.error)
+      dispatch(setNotification(exception.response.data.error, 5))
     }
   }
 
@@ -68,11 +70,12 @@ const App = () => {
 
     try {
       const blog = await blogService.update(id, blogObject)
+      setNotification('liked', 5)
 
       setBlogs(blogs.map((b) => (b.id !== id ? b : blog)))
     } catch (exception) {
       console.error(exception.response.data.error)
-      notify(exception.response.data.error)
+      dispatch(setNotification(exception.response.data.error, 5))
     }
   }
 
@@ -87,7 +90,7 @@ const App = () => {
       setBlogs(blogs.filter((b) => b.id !== id))
     } catch (exception) {
       console.error(exception.response.data.error)
-      notify(exception.response.data.error)
+      setNotification(exception.response.data.error, 5)
     }
   }
 
@@ -96,13 +99,13 @@ const App = () => {
       {!user ? (
         <>
           <h2>log in to application</h2>
-          <Notification message={errorMessage} />
+          <Notification />
           <LoginForm logIn={logIn} />
         </>
       ) : (
         <>
           <h2>blogs</h2>
-          <Notification message={errorMessage} />
+          <Notification />
           {user.name} logged in
           <button onClick={handleLogout}>logout</button>
           <BlogForm createBlog={createBlog} />

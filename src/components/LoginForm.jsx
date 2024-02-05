@@ -10,7 +10,6 @@ const Input = ({ handleInput, type, name, value }) => {
     </div>
   )
 }
-
 Input.propTypes = {
   handleInput: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
@@ -51,7 +50,6 @@ const LoginForm = ({ logIn }) => {
     </>
   )
 }
-
 LoginForm.propTypes = {
   logIn: PropTypes.func.isRequired
 }
