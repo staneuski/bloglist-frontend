@@ -1,13 +1,13 @@
 {
   "name": "bloglist-frontend",
   "private": true,
-  "version": "5.11.0",
+  "version": "7.13.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "format": "prettier --config .prettierrc 'src/**/*.{css,js,jsx}' --write",
+    "format": "prettier --config .prettierrc '{cypress,src}/**/*.{css,js,jsx}' --write",
     "preview": "vite preview",
     "test": "jest",
     "cypress:open": "cypress open",
@@ -17,6 +17,7 @@
     "node": ">=21.4.0 <22.0.0"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.18.1",
     "axios": "^1.6.2",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",

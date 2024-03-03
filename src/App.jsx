@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
@@ -7,9 +8,15 @@ import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import {
+  useNotificationDispatch,
+  setNotification
+} from './reducers/NotificationContext'
+
 const App = () => {
+  const dispatch = useNotificationDispatch()
+
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -32,11 +39,6 @@ const App = () => {
     setUser(null)
   }
 
-  const notify = (message) => {
-    setErrorMessage(message)
-    setTimeout(() => setErrorMessage(null), 5000)
-  }
-
   const logIn = async (credentials) => {
     try {
       const user = await loginService.login(credentials)
@@ -46,7 +48,7 @@ const App = () => {
       setUser(user)
     } catch (exception) {
       console.error(exception.response.data.error)
-      notify(exception.response.data.error)
+      setNotification(dispatch, exception.response.data.error, 5)
     }
   }
 
@@ -55,10 +57,10 @@ const App = () => {
       const blog = await blogService.create(blogObject)
 
       setBlogs(blogs.concat({ ...blog, user: user }))
-      notify(`a new blog '${blog.title}' added`)
+      setNotification(dispatch, `a new blog '${blog.title}' added`, 5)
     } catch (exception) {
       console.error(exception.response.data.error)
-      notify(exception.response.data.error)
+      setNotification(dispatch, exception.response.data.error, 5)
     }
   }
 
@@ -72,7 +74,7 @@ const App = () => {
       setBlogs(blogs.map((b) => (b.id !== id ? b : blog)))
     } catch (exception) {
       console.error(exception.response.data.error)
-      notify(exception.response.data.error)
+      setNotification(dispatch, exception.response.data.error, 5)
     }
   }
 
@@ -87,7 +89,7 @@ const App = () => {
       setBlogs(blogs.filter((b) => b.id !== id))
     } catch (exception) {
       console.error(exception.response.data.error)
-      notify(exception.response.data.error)
+      setNotification(dispatch, exception.response.data.error, 5)
     }
   }
 
@@ -96,13 +98,13 @@ const App = () => {
       {!user ? (
         <>
           <h2>log in to application</h2>
-          <Notification message={errorMessage} />
+          <Notification />
           <LoginForm logIn={logIn} />
         </>
       ) : (
         <>
           <h2>blogs</h2>
-          <Notification message={errorMessage} />
+          <Notification />
           {user.name} logged in
           <button onClick={handleLogout}>logout</button>
           <BlogForm createBlog={createBlog} />

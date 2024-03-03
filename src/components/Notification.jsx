@@ -1,7 +1,8 @@
-import PropTypes from 'prop-types'
+import { useNotificationValue } from '../reducers/NotificationContext'
 
-const Notification = ({ message }) => {
-  if (message === null) return null
+const Notification = () => {
+  const message = useNotificationValue()
+  if (!message) return null
 
   const errorTriggers = [
     'error',
@@ -14,10 +15,6 @@ const Notification = ({ message }) => {
     ? 'notification_error'
     : 'notification_success'
   return <div className={'notification ' + modifier}>{message}</div>
-}
-
-Notification.propTypes = {
-  buttonLabel: PropTypes.string
 }
 
 export default Notification
