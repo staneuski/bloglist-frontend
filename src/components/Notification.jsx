@@ -1,4 +1,4 @@
-import { useNotificationValue } from '../reducers/NotificationContext'
+import { useNotificationValue } from '../contexts/NotificationContext'
 
 const Notification = () => {
   const message = useNotificationValue()

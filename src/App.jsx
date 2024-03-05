@@ -9,31 +9,31 @@ import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import { useLoginDispatch, useLoginValue } from './contexts/LoginContext'
 import {
   useNotificationDispatch,
   setNotification
-} from './reducers/NotificationContext'
+} from './contexts/NotificationContext'
 
 const App = () => {
   const queryClient = useQueryClient()
-  const dispatch = useNotificationDispatch()
-
-  const [user, setUser] = useState(null)
+  const loginDispatch = useLoginDispatch()
+  const ntfnDispatch = useNotificationDispatch()
 
   useEffect(() => {
     const loggedUserJSON = localStorage.getItem('loggedUser')
     if (!loggedUserJSON) return
 
     const user = JSON.parse(loggedUserJSON)
-    setUser(user)
+    loginDispatch({ type: 'USER', payload: user })
     blogService.setToken(user.token)
-  }, [])
+  }, [loginDispatch])
 
   const handleLogout = (event) => {
     event.preventDefault()
 
     localStorage.removeItem('loggedUser')
-    setUser(null)
+    loginDispatch({ type: 'USER', payload: null })
   }
 
   const logIn = async (credentials) => {
@@ -42,10 +42,10 @@ const App = () => {
       blogService.setToken(user.token)
 
       localStorage.setItem('loggedUser', JSON.stringify(user))
-      setUser(user)
+      loginDispatch({ type: 'USER', payload: user })
     } catch (exception) {
       console.error(exception.response.data.error)
-      setNotification(dispatch, exception.response.data.error, 5)
+      setNotification(ntfnDispatch, exception.response.data.error, 5)
     }
   }
 
@@ -63,7 +63,7 @@ const App = () => {
 
   const createBlog = (blogObject) => {
     createBlogMutation.mutate(blogObject)
-    setNotification(dispatch, `a new blog '${blogObject.title}' added`, 5)
+    setNotification(ntfnDispatch, `a new blog '${blogObject.title}' added`, 5)
   }
 
   const likeBlogMutation = useMutation({
@@ -92,6 +92,9 @@ const App = () => {
 
     removeBlogMutation.mutate(id)
   }
+
+  const user = useLoginValue()
+  console.log(user)
 
   const result = useQuery({
     queryKey: ['blogs'],
