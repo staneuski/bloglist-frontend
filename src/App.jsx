@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
+
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -14,14 +15,10 @@ import {
 } from './reducers/NotificationContext'
 
 const App = () => {
+  const queryClient = useQueryClient()
   const dispatch = useNotificationDispatch()
 
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [])
 
   useEffect(() => {
     const loggedUserJSON = localStorage.getItem('loggedUser')
@@ -52,46 +49,60 @@ const App = () => {
     }
   }
 
-  const createBlog = async (blogObject) => {
-    try {
-      const blog = await blogService.create(blogObject)
-
-      setBlogs(blogs.concat({ ...blog, user: user }))
-      setNotification(dispatch, `a new blog '${blog.title}' added`, 5)
-    } catch (exception) {
-      console.error(exception.response.data.error)
-      setNotification(dispatch, exception.response.data.error, 5)
+  const createBlogMutation = useMutation({
+    mutationFn: blogService.create,
+    onSuccess: (blogObject) => {
+      queryClient.invalidateQueries({ queryKey: ['blogs'] })
+      const blogs = queryClient.getQueryData({ queryKey: ['blogs'] })
+      queryClient.setQueryData(
+        { queryKey: ['blogs'] },
+        blogs.concat(blogObject)
+      )
     }
+  })
+
+  const createBlog = (blogObject) => {
+    createBlogMutation.mutate(blogObject)
+    setNotification(dispatch, `a new blog '${blogObject.title}' added`, 5)
   }
 
-  const likeBlog = async (id) => {
+  const likeBlogMutation = useMutation({
+    mutationFn: blogService.update,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blogs'] })
+    }
+  })
+
+  const likeBlog = (id) => {
     const blogToUpdate = blogs.find((b) => b.id === id)
-    const blogObject = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
-
-    try {
-      const blog = await blogService.update(id, blogObject)
-
-      setBlogs(blogs.map((b) => (b.id !== id ? b : blog)))
-    } catch (exception) {
-      console.error(exception.response.data.error)
-      setNotification(dispatch, exception.response.data.error, 5)
-    }
+    likeBlogMutation.mutate({ ...blogToUpdate, likes: blogToUpdate.likes + 1 })
   }
 
-  const removeBlog = async (id) => {
+  const removeBlogMutation = useMutation({
+    mutationFn: blogService.remove,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blogs'] })
+    }
+  })
+
+  const removeBlog = (id) => {
     const blogToRemove = blogs.find((b) => b.id === id)
     if (!confirm(`Remove blog ${blogToRemove.title} by ${blogToRemove.author}`))
       return
 
-    try {
-      await blogService.remove(id)
-
-      setBlogs(blogs.filter((b) => b.id !== id))
-    } catch (exception) {
-      console.error(exception.response.data.error)
-      setNotification(dispatch, exception.response.data.error, 5)
-    }
+    removeBlogMutation.mutate(id)
   }
+
+  const result = useQuery({
+    queryKey: ['blogs'],
+    queryFn: blogService.getAll,
+    refetchOnWindowFocus: false
+  })
+
+  if (result.isLoading) {
+    return <div>loading data...</div>
+  }
+  const blogs = result.data.toSorted((lhs, rhs) => rhs.likes - lhs.likes)
 
   return (
     <div>
@@ -109,17 +120,15 @@ const App = () => {
           <button onClick={handleLogout}>logout</button>
           <BlogForm createBlog={createBlog} />
           <div className="blog-list">
-            {blogs
-              .sort((lhs, rhs) => rhs.likes - lhs.likes)
-              .map((blog) => (
-                <Blog
-                  key={blog.id}
-                  blog={blog}
-                  isOwned={blog.user.username === user.username}
-                  handleLike={() => likeBlog(blog.id)}
-                  handleRemove={() => removeBlog(blog.id)}
-                />
-              ))}
+            {blogs.map((blog) => (
+              <Blog
+                key={blog.id}
+                blog={blog}
+                isOwned={blog.user.username === user.username}
+                handleLike={() => likeBlog(blog.id)}
+                handleRemove={() => removeBlog(blog.id)}
+              />
+            ))}
           </div>
         </>
       )}
