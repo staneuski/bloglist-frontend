@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from 'react-redux'
-
 import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, Container, Typography } from '@mui/material'
 
 import BlogForm from './components/BlogForm'
 import BlogList from './components/BlogList'
@@ -22,24 +22,43 @@ const App = () => {
 
   const user = useSelector((state) => state.user)
   return (
-    <div>
+    <Container>
       {!user ? (
         <>
-          <h2>log in to application</h2>
           <Notification />
+          <Typography
+            // textAlign="center"
+            variant="h4"
+            component="h1"
+            sx={{ mb: 2 }}
+          >
+            Log in to application
+          </Typography>
           <LoginForm />
         </>
       ) : (
         <>
-          <h2>blogs</h2>
           <Notification />
-          {user.name} logged in
-          <button onClick={() => dispatch(logOut())}>logout</button>
+          <Typography
+            // textAlign="center"
+            variant="h4"
+            component="h1"
+            sx={{ mb: 2 }}
+          >
+            Blogs
+          </Typography>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => dispatch(logOut())}
+          >
+            logout {user.name}
+          </Button>
           <BlogForm />
           <BlogList />
         </>
       )}
-    </div>
+    </Container>
   )
 }
 

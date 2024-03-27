@@ -36,6 +36,7 @@ export const logIn = (credentials) => {
 
       localStorage.setItem('loggedUser', JSON.stringify(user))
       dispatch(set(user))
+      dispatch(setNotification(`Welcome ${user.name}`, 5))
     } catch (exception) {
       console.error(exception.response.data.error)
       dispatch(setNotification(exception.response.data.error, 5))

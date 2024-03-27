@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
+import { Button } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 
@@ -19,12 +23,16 @@ const Blog = ({ blog }) => {
     <div className="blog">
       <div className="blog__title">
         <b>{blog.title}</b> <i>{blog.author}</i>
-        <button
+        <Button
           className="button blog__button-visibility"
+          color="success"
           onClick={toggleVisibility}
+          size="small"
+          variant="outlined"
+          startIcon={visible ? <VisibilityOffIcon /> : <VisibilityIcon />}
         >
           {visible ? 'hide' : 'show'}
-        </button>
+        </Button>
       </div>
       {visible && (
         <div>
@@ -33,21 +41,28 @@ const Blog = ({ blog }) => {
           </a>
           <div>
             <span className="blog__likes-counter">likes {blog.likes}</span>
-            <button
+            <Button
               className="button blog__button-like"
+              color="secondary"
               onClick={() => dispatch(likeBlog(blog))}
+              size="small"
+              variant="outlined"
             >
               like
-            </button>
+            </Button>
           </div>
           <div className="blog__username">{blog.user.name}</div>
           {isOwned && (
-            <button
+            <Button
               className="button blog__button-remove"
+              color="error"
               onClick={() => dispatch(removeBlog(blog))}
+              size="small"
+              startIcon={<DeleteIcon />}
+              variant="outlined"
             >
               remove
-            </button>
+            </Button>
           )}
         </div>
       )}

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
+import { Button, TextField, Typography } from '@mui/material'
 
 import Togglable from './Togglable'
 
@@ -9,8 +10,13 @@ import { createBlog } from '../reducers/blogReducer'
 const Input = ({ handleInput, type, name, value }) => {
   return (
     <div>
-      {name}:
-      <input onChange={handleInput} type={type} value={value} name={name} />
+      <TextField
+        onChange={handleInput}
+        type={type}
+        value={value}
+        label={name}
+        sx={{ mb: 1 }}
+      />
     </div>
   )
 }
@@ -41,7 +47,9 @@ const BlogForm = () => {
 
   return (
     <Togglable buttonLabel="new blog" ref={self}>
-      <h2>create new</h2>
+      <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
+        Create new
+      </Typography>
       <form onSubmit={handleCreateBlog}>
         <Input
           handleInput={({ target }) => setItem(target)}
@@ -61,9 +69,14 @@ const BlogForm = () => {
           name="url"
           value={blog.url}
         />
-        <button className="button blog-form__button-submit" type="submit">
-          create
-        </button>
+        <Button
+          className="button blog-form__button-submit"
+          variant="contained"
+          color="primary"
+          type="submit"
+        >
+          Create
+        </Button>
       </form>
     </Togglable>
   )

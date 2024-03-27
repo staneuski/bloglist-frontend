@@ -1,7 +1,7 @@
 {
   "name": "bloglist-frontend",
   "private": true,
-  "version": "5.11.0",
+  "version": "7.21.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
@@ -17,6 +17,10 @@
     "node": ">=21.4.0 <22.0.0"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.14",
+    "@mui/material": "^5.15.14",
     "@reduxjs/toolkit": "^2.1.0",
     "axios": "^1.6.2",
     "prop-types": "^15.8.1",

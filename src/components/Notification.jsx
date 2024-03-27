@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux'
+import { Alert } from '@mui/material'
 
 const Notification = () => {
   const message = useSelector((state) => state.notification)
@@ -11,10 +12,14 @@ const Notification = () => {
     'malformatted',
     'unauthorized'
   ]
-  const modifier = errorTriggers.some((err) => message.includes(err))
-    ? 'notification_error'
-    : 'notification_success'
-  return <div className={'notification ' + modifier}>{message}</div>
+  const isError = errorTriggers.some((err) => message.includes(err))
+  const modifier = isError ? 'notification_error' : 'notification_success'
+  const severity = isError ? 'error' : 'success'
+  return (
+    <Alert className={'notification ' + modifier} severity={severity}>
+      {message}
+    </Alert>
+  )
 }
 
 export default Notification

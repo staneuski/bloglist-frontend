@@ -1,14 +1,20 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
+import { Button, TextField } from '@mui/material'
 
 import { logIn } from '../reducers/userReducer'
 
 const Input = ({ handleInput, type, name, value }) => {
   return (
     <div>
-      {name}
-      <input onChange={handleInput} type={type} value={value} name={name} />
+      <TextField
+        onChange={handleInput}
+        type={type}
+        value={value}
+        label={name}
+        sx={{ mb: 2 }}
+      />
     </div>
   )
 }
@@ -47,9 +53,14 @@ const LoginForm = () => {
           name="password"
           value={password}
         />
-        <button className="button login-form__button-login" type="submit">
+        <Button
+          className="button login-form__button-login"
+          variant="contained"
+          color="primary"
+          type="submit"
+        >
           login
-        </button>
+        </Button>
       </form>
     </>
   )
